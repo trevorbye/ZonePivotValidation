@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ZonePivotValidation.Deserialization
 {
@@ -37,5 +35,34 @@ namespace ZonePivotValidation.Deserialization
     class ZonePivotFile
     {
         public List<PivotGroupEntity> groups { get; set; }
+    }
+
+    class SearchablePivotGroupEntity
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Prompt { get; set; }
+
+        public Dictionary<string, string> Pivots { get; set; }
+
+        public SearchablePivotGroupEntity(string id, string title, string prompt)
+        {
+            Id = id;
+            Title = title;
+            Prompt = prompt;
+            Pivots = new Dictionary<string, string>();
+        }
+    }
+
+    class SearchableZonePivotFile
+    {
+        public HashSet<string> ZoneIds { get; set; }
+        public List<SearchablePivotGroupEntity> Groups { get; set; }
+
+        public SearchableZonePivotFile(HashSet<string> zoneIds, List<SearchablePivotGroupEntity> groups)
+        {
+            ZoneIds = zoneIds;
+            Groups = groups;
+        }
     }
 }
