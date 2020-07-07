@@ -16,12 +16,31 @@ namespace ZonePivotValidation.Validation
             TreeFile = YamlDeserializer.DeserializeYamlToSearchable(pathToTreeFile);
         }
 
-        public bool IsPrValid()
+        public List<string> GetZonePivotPrValidationErrors()
         {
-            bool validPr = true;
-            
+            var errors = new List<string>();
+            // verify all zone id's from master version exist in tree version
+            foreach (string masterZoneId in MasterFile.ZoneIdsAndGroupMap.Keys)
+            {
+                if (TreeFile.ZoneIdsAndGroupMap.ContainsKey(masterZoneId))
+                {
+                    // verify that zone definition hasn't changed. If dicts are equal, pivot def is the same
+                    if (MasterFile.ZoneIdsAndGroupMap[masterZoneId].Pivots != TreeFile.ZoneIdsAndGroupMap[masterZoneId].Pivots)
+                    {
+                        errors.Add($"The zone definition for '{masterZoneId}' has been modified.");
+                    }
+                }
+                else 
+                {
+                    errors.Add($"The zone definition '{masterZoneId}' has been removed."); 
+                }
+            }
 
-            return validPr;
+            if (errors.Count == 0)
+            {
+                return null;
+            }
+            return errors;
         }
     }
 }

@@ -41,24 +41,23 @@ namespace ZonePivotValidation
 
         public static SearchableZonePivotFile DeserializeYamlToSearchable(string filePath)
         {
-            HashSet<string> zoneIds = new HashSet<string>();
-            List<SearchablePivotGroupEntity> groups = new List<SearchablePivotGroupEntity>();
+            var zoneMap = new Dictionary<string, SearchablePivotGroupEntity>();
             var d = new Deserializer();
 
             var zoneFile = d.Deserialize<ZonePivotFile>(new StreamReader(filePath));
             var zoneGroups = zoneFile.groups;
+
             foreach (var zone in zoneGroups)
             {
-                zoneIds.Add(zone.id);
                 var searchableZone = new SearchablePivotGroupEntity(zone.id, zone.title, zone.prompt);
                 foreach (var pivot in zone.pivots)
                 {
                     searchableZone.Pivots.Add(pivot.id, pivot.title);
                 }
-                groups.Add(searchableZone);
+                zoneMap.Add(zone.id, searchableZone);
             }
 
-            return new SearchableZonePivotFile(zoneIds, groups);
+            return new SearchableZonePivotFile(zoneMap);
         }
     }
 }

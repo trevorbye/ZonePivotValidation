@@ -56,13 +56,11 @@ namespace ZonePivotValidation.Deserialization
 
     class SearchableZonePivotFile
     {
-        public HashSet<string> ZoneIds { get; set; }
-        public List<SearchablePivotGroupEntity> Groups { get; set; }
+        public Dictionary<string, SearchablePivotGroupEntity> ZoneIdsAndGroupMap { get; set; }
 
-        public SearchableZonePivotFile(HashSet<string> zoneIds, List<SearchablePivotGroupEntity> groups)
+        public SearchableZonePivotFile(Dictionary<string, SearchablePivotGroupEntity> zoneMap)
         {
-            ZoneIds = zoneIds;
-            Groups = groups;
+            ZoneIdsAndGroupMap = zoneMap;
         }
     }
 }
